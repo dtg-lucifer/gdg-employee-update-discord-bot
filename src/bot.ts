@@ -1,16 +1,17 @@
-import { ActivityType, Client, GatewayIntentBits, Partials } from "discord.js";
+import { Client } from "discord.js";
 import { handleMessage } from "./handlers/message-handler";
 import { scheduleMorningReminders } from "./schedulers/morning-reminder";
 import { scheduleNightlySummary } from "./schedulers/night-summary";
 import http from "http";
 
 import dotenv from "dotenv";
+import { CONFIG } from "./config/config";
 
 dotenv.config();
 
-// Create HTTP server
+// @INFO Start HTTP server for health check route
 const server = http.createServer((req, res) => {
-  if (req.url === "/health") {
+  if (req.url === "/health" && req.method === "GET") {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify({
@@ -28,46 +29,25 @@ const server = http.createServer((req, res) => {
 const PORT = process.env.PORT || 8080;
 
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.DirectMessages,
-  ],
+  intents: [...CONFIG.INTENTS],
+  partials: [...CONFIG.PARTIALS],
+  presence: {
+    activities: CONFIG.PRESENSE.activities,
+    status: CONFIG.PRESENSE.status,
+  },
   allowedMentions: {
     repliedUser: false,
     parse: ["users", "roles"],
-  },
-  partials: [
-    Partials.User,
-    Partials.Message,
-    Partials.GuildMember,
-    Partials.GuildScheduledEvent,
-    Partials.Reaction,
-    Partials.ThreadMember,
-    Partials.GuildScheduledEvent,
-    Partials.Channel,
-  ],
-  presence: {
-    activities: [
-      {
-        name: "your minds",
-        type: ActivityType.Streaming,
-        state: "on fire",
-        url: "https://gdgtiu.org",
-      },
-    ],
-    status: "idle",
   },
 });
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
+
   scheduleMorningReminders(client);
   scheduleNightlySummary(client);
 
-  // Start HTTP server
+  // @INFO Start HTTP server for health check route
   server.listen(PORT, () => {
     console.log(`HTTP server listening on port ${PORT}`);
   });
