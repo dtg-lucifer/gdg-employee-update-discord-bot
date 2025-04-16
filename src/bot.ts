@@ -1,8 +1,8 @@
 import { Client } from "discord.js";
 import { handleMessage } from "./handlers/message-handler";
-import { scheduleMorningReminders } from "./schedulers/morning-reminder";
-import { scheduleNightlySummary } from "./schedulers/night-summary";
 import http from "http";
+// import { scheduleMorningReminders } from "./schedulers/morning-reminder";
+// import { scheduleNightlySummary } from "./schedulers/night-summary";
 
 import dotenv from "dotenv";
 import { CONFIG } from "./config/config";
@@ -44,8 +44,10 @@ const client = new Client({
 client.once("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
-  scheduleMorningReminders(client);
-  scheduleNightlySummary(client);
+  // -------------------------------------------------
+  // scheduleMorningReminders(client);
+  // scheduleNightlySummary(client);
+  // -------------------------------------------------
 
   // @INFO Start HTTP server for health check route
   server.listen(PORT, () => {
