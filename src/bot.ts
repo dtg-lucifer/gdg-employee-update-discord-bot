@@ -1,6 +1,8 @@
 import { Client } from "discord.js";
 import { handleMessage } from "./handlers/message-handler";
 import { ExServer } from "./web/index";
+import { scheduleMorningReminders } from "./schedulers/morning-reminder";
+import { scheduleNightlySummary } from "./schedulers/night-summary";
 
 import dotenv from "dotenv";
 import { CONFIG } from "./config/config";
@@ -25,11 +27,6 @@ const client = new Client({
 client.once("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
-  // Uncomment these if you want to use the scheduled reminders
-  // scheduleMorningReminders(client);
-  // scheduleNightlySummary(client);
-
-  // Initialize and start the Express server
   const server = new ExServer(PORT, client);
   server.start();
 });
