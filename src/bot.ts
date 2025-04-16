@@ -1,32 +1,13 @@
 import { Client } from "discord.js";
 import { handleMessage } from "./handlers/message-handler";
-import http from "http";
-// import { scheduleMorningReminders } from "./schedulers/morning-reminder";
-// import { scheduleNightlySummary } from "./schedulers/night-summary";
+import { ExServer } from "./web/index";
 
 import dotenv from "dotenv";
 import { CONFIG } from "./config/config";
 
 dotenv.config();
 
-// @INFO Start HTTP server for health check route
-const server = http.createServer((req, res) => {
-  if (req.url === "/health" && req.method === "GET") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(
-      JSON.stringify({
-        status: "ok",
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-      })
-    );
-    return;
-  }
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Discord bot is running!");
-});
-
-const PORT = process.env.PORT || 8080;
+const PORT = parseInt(process.env.PORT || "8080");
 
 const client = new Client({
   intents: [...CONFIG.INTENTS],
@@ -44,15 +25,13 @@ const client = new Client({
 client.once("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
-  // -------------------------------------------------
+  // Uncomment these if you want to use the scheduled reminders
   // scheduleMorningReminders(client);
   // scheduleNightlySummary(client);
-  // -------------------------------------------------
 
-  // @INFO Start HTTP server for health check route
-  server.listen(PORT, () => {
-    console.log(`HTTP server listening on port ${PORT}`);
-  });
+  // Initialize and start the Express server
+  const server = new ExServer(PORT, client);
+  server.start();
 });
 
 client.on("messageCreate", handleMessage);
