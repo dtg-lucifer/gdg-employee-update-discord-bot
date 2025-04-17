@@ -3,6 +3,18 @@ import { EmbedBuilder } from "discord.js";
 export const buildSummaryEmbed = (updates: any[]) => {
   const embed = new EmbedBuilder()
     .setTitle(`📋 Daily Summary - ${new Date().toDateString()}`)
+    .setAuthor({
+      name: "GDG On Campus TIU",
+      url: "https://devx.gdgtiu.org",
+    })
+    .setFooter({
+      text: "Developer: Piush Bose",
+      iconURL:
+        "https://storage.googleapis.com/leaderboard-pfp/assets/gdg_logo.jpeg",
+    })
+    .setThumbnail(
+      "https://storage.googleapis.com/leaderboard-pfp/assets/gdg_logo.jpeg"
+    )
     .setColor(0x00ae86)
     .setTimestamp();
 
