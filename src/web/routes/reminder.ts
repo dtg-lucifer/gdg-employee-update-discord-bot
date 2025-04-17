@@ -23,10 +23,10 @@ reminderRouter.post("/send-morning", async (req, res) => {
       return;
     }
 
-    await sendMorningReminder(client);
+    sendMorningReminder(client);
     res
       .status(200)
-      .json({ status: "success", message: "Morning reminders sent" });
+      .json({ status: "success", message: "Morning reminders are being sent" });
   } catch (error) {
     console.error("Error sending morning reminder:", error);
     res.status(500).json({ error: "Failed to send reminders" });
