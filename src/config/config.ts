@@ -7,7 +7,8 @@ import {
 
 export const CONFIG = {
   UPDATE_CHANNEL_ID: "1361735268775887039",
-  BOT_ID: "1361701203276206314",
+  // BOT_ID: "1361701203276206314",
+  BOT_ID: "1362446596062576973",
   SUMMARY_CHANNEL_ID: "1361735386115866655",
   GUILD_ID: "1293550314552823840",
   MANAGEMENT_ROLE_ID: "1293567884894929049",
@@ -15,22 +16,22 @@ export const CONFIG = {
   REMINDER_TIME: "0 11 * * *",
   SUMMARY_TIME: "0 23 * * *",
   INTENTS: [
+    // Standard intents
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.GuildPresences,
-    GatewayIntentBits.GuildMessageTyping,
-    GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.GuildScheduledEvents,
     GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildWebhooks,
     GatewayIntentBits.GuildIntegrations,
     GatewayIntentBits.GuildInvites,
-    GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildMessageTyping,
+    GatewayIntentBits.GuildScheduledEvents,
+    GatewayIntentBits.DirectMessages,
+
+    // Privileged intents - must be enabled in Developer Portal
+    GatewayIntentBits.MessageContent, // Requires verification
+    GatewayIntentBits.GuildMembers, // Requires verification
+    GatewayIntentBits.GuildPresences, // Requires verification
   ],
   PARTIALS: [
     Partials.User,
@@ -39,7 +40,6 @@ export const CONFIG = {
     Partials.GuildScheduledEvent,
     Partials.Reaction,
     Partials.ThreadMember,
-    Partials.GuildScheduledEvent,
     Partials.Channel,
   ],
   PRESENSE: {
