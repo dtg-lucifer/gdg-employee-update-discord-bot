@@ -50,7 +50,10 @@ export const sendNightlySummary = async (client: Client) => {
     );
 
     if (summaryChannel && summaryChannel.isTextBased()) {
-      await (summaryChannel as TextChannel).send({ embeds: [embed] });
+      await (summaryChannel as TextChannel).send({
+        embeds: [embed],
+        content: `<@&${CONFIG.MANAGEMENT_ROLE_ID}>`,
+      });
       console.log("Summary sent successfully");
     } else {
       console.error("Summary channel not found or not a text channel");
