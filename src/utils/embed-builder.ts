@@ -19,9 +19,14 @@ export const buildSummaryEmbed = (updates: any[]) => {
     .setTimestamp();
 
   updates.forEach((update) => {
+    let content = (update.content.split("\n") as Array<String>)
+      .map((line, i) => {
+        return `> ${line}`;
+      })
+      .join("\n");
     embed.addFields({
       name: `**${update.username}**`,
-      value: `*${update.content}*`,
+      value: `*${content}*`,
     });
   });
 
