@@ -7,7 +7,10 @@ export const buildSummaryEmbed = (updates: any[]) => {
     .setTimestamp();
 
   updates.forEach((update) => {
-    embed.addFields({ name: update.username, value: update.content });
+    embed.addFields({
+      name: `**${update.username}**`,
+      value: `*${update.content}*`,
+    });
   });
 
   return embed;
