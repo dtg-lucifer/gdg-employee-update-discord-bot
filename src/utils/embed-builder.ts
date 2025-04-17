@@ -25,6 +25,10 @@ export const buildSummaryEmbed = (updates: any[]) => {
     });
   });
 
+  embed.setDescription(
+    "Here are the updates for today. Thank you for your contributions!"
+  );
+
   return embed;
 };
 
