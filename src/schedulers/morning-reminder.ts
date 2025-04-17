@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import { Client, GuildMember } from "discord.js";
 import { CONFIG } from "../config/config";
+import { embedBuilder } from "../utils/embed-builder";
 
 export const scheduleMorningReminders = (client: Client) => {
   cron.schedule(CONFIG.REMINDER_TIME, async () => {
@@ -80,9 +81,16 @@ export const sendMorningReminder = async (client: Client) => {
         if (member.user.bot) continue;
 
         console.log(`Attempting to DM ${member.user.username}...`);
-        await member.send(
+
+        const embed = embedBuilder(
+          "Morning Reminder",
           "👋 Hey! Don't forget to post your update for the day in the updates channel."
         );
+        await member.send({
+          embeds: [embed],
+          allowedMentions: { users: [member.id] },
+        });
+
         successCount++;
       } catch (error: any) {
         failCount++;
