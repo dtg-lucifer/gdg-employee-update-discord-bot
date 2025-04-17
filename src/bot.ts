@@ -40,7 +40,7 @@ client.on("ready", () => {
       {
         name: "your mind with knowledge",
         type: ActivityType.Streaming,
-        url: "https://devx.gdgtiu.org",
+        url: "https://www.twitch.tv/gdgoncampustiu",
       },
     ],
   });
