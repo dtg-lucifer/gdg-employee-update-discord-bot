@@ -1,4 +1,4 @@
-import { Client, Collection } from "discord.js";
+import { ActivityType, Client, Collection } from "discord.js";
 import { handleMessage } from "./handlers/message-handler";
 import { ExServer } from "./web/index";
 
@@ -26,11 +26,24 @@ const client = new Client({
 // @INFO Set client as a property on request object
 (client as any).commands = new Collection();
 
-client.once("ready", () => {
+client.once("ready", (c: Client) => {
   console.log(`Logged in as ${client.user?.tag}`);
 
   const server = new ExServer(PORT, client);
   server.start();
+});
+
+client.on("ready", () => {
+  client.user?.setPresence({
+    status: "online",
+    activities: [
+      {
+        name: "your mind with knowledge",
+        type: ActivityType.Streaming,
+        url: "https://devx.gdgtiu.org",
+      },
+    ],
+  });
 });
 
 client.on("messageCreate", handleMessage);
