@@ -12,3 +12,25 @@ export const buildSummaryEmbed = (updates: any[]) => {
 
   return embed;
 };
+
+export const embedBuilder = (title: string, description: string) => {
+  const embed = new EmbedBuilder()
+    .setTitle(title)
+    .setAuthor({
+      name: "GDG On Campus TIU",
+      url: "https://devx.gdgtiu.org",
+    })
+    .setDescription(description)
+    .setColor(0x00ae86)
+    .setTimestamp()
+    .setFooter({
+      text: "Developer: Piush Bose",
+      iconURL:
+        "https://storage.googleapis.com/leaderboard-pfp/assets/gdg_logo.jpeg",
+    })
+    .setThumbnail(
+      "https://storage.googleapis.com/leaderboard-pfp/assets/gdg_logo.jpeg"
+    );
+
+  return embed;
+};

@@ -1,11 +1,10 @@
-import { Client } from "discord.js";
+import { Client, Collection } from "discord.js";
 import { handleMessage } from "./handlers/message-handler";
 import { ExServer } from "./web/index";
-import { scheduleMorningReminders } from "./schedulers/morning-reminder";
-import { scheduleNightlySummary } from "./schedulers/night-summary";
 
 import dotenv from "dotenv";
 import { CONFIG } from "./config/config";
+import { interactionHandler } from "./handlers/interaction-handler";
 
 dotenv.config();
 
@@ -24,16 +23,17 @@ const client = new Client({
   },
 });
 
+// @INFO Set client as a property on request object
+(client as any).commands = new Collection();
+
 client.once("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
-
-  scheduleMorningReminders(client);
-  scheduleNightlySummary(client);
 
   const server = new ExServer(PORT, client);
   server.start();
 });
 
 client.on("messageCreate", handleMessage);
+client.on("interactionCreate", interactionHandler);
 
 client.login(process.env.BOT_TOKEN);

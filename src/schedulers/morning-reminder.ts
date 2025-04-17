@@ -97,6 +97,6 @@ export const sendMorningReminder = async (client: Client) => {
     console.log(`DM Summary: ${successCount} successful, ${failCount} failed`);
   } catch (error) {
     console.error("Error in sendMorningReminder:", error);
-    throw error; // Re-throw for upstream error handling
+    throw error;
   }
 };

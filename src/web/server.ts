@@ -2,6 +2,7 @@ import express from "express";
 import { Client } from "discord.js";
 import { indexRouter } from "./routes";
 import { errorHandler } from "./middlewares/error-handler";
+import { CommandService } from "../services/command-service";
 
 class ExServer {
   server: express.Express;
@@ -19,18 +20,29 @@ class ExServer {
       next();
     });
 
-    // Initialize server
+    // @INFO Initialize server
     this.setupMiddlewares();
     this.setupRoutes();
+    this.registerCommands(); // @INFO register commands
   }
 
-  start() {
+  async start() {
     return this.server.listen(this.port, () => {
       console.log(`Server is running on port ${this.port}`);
     });
   }
 
+  async registerCommands() {
+    try {
+      const commandData = await CommandService.loadCommands(this.client);
+      await CommandService.registerWithDiscordAPI(commandData);
+    } catch (error) {
+      console.error("Error registering commands:", error);
+    }
+  }
+
   setupRoutes() {
+    console.log("Setting up routes");
     this.server.use("/", indexRouter);
   }
 
