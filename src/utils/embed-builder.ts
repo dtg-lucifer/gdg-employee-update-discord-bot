@@ -2,7 +2,7 @@ import { EmbedBuilder } from "discord.js";
 
 export const buildSummaryEmbed = (updates: any[]) => {
   const embed = new EmbedBuilder()
-    .setTitle(`📋 Daily Summary - ${new Date().toLocaleDateString()}`)
+    .setTitle(`📋 Daily Summary - ${new Date().toDateString()}`)
     .setColor(0x00ae86)
     .setTimestamp();
 
