@@ -86,10 +86,10 @@ export const sendMorningReminder = async (client: Client) => {
           "Morning Reminder",
           "👋 Hey! Don't forget to post your update for the day in the updates channel."
         );
-        // await member.send({
-        //   embeds: [embed],
-        //   allowedMentions: { users: [member.id] },
-        // });
+        await member.send({
+          embeds: [embed],
+          allowedMentions: { users: [member.id] },
+        });
 
         successCount++;
       } catch (error: any) {

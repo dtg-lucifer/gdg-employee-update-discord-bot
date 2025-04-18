@@ -45,45 +45,6 @@ const sendReminder_execute = async (interaction: Interaction) => {
   }
 };
 
-// const sendReminder_execute = async (interaction: Interaction) => {
-//   if (!interaction.isCommand()) return;
-//   if (interaction.commandName !== "send-reminder") return;
-//   if (!interaction.guildId) return;
-
-//   // Defer the reply immediately to avoid timeout
-//   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-
-//   try {
-//     const member = await interaction.guild!.members.fetch(interaction.user.id);
-
-//     if (!member.roles.cache.has("1293567884894929049")) {
-//       const embed = embedBuilder(
-//         "Error!",
-//         "You do not have permission to use this command."
-//       );
-//       await interaction.editReply({ embeds: [embed] });
-//       return;
-//     }
-
-//     const embed = embedBuilder(
-//       "Success!",
-//       "Sending morning reminders to all users..."
-//     );
-//     sendMorningReminder(interaction.client);
-//     await interaction.editReply({ embeds: [embed] });
-//   } catch (error) {
-//     console.error("Error handling send-reminder command:", error);
-//     try {
-//       await interaction.editReply({
-//         content: "An error occurred while processing your request.",
-//       });
-//     } catch (_) {
-//       // Already acknowledged or interaction expired
-//       console.error("Error details:", error);
-//     }
-//   }
-// };
-
 const sendReminder_command = new SlashCommandBuilder()
   .setName("send-reminder")
   .setDescription("Send reminders to all users")
