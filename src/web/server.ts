@@ -34,6 +34,7 @@ class ExServer {
 
   async registerCommands() {
     try {
+      console.log(`Using application ID: ${process.env.BOT_CLIENT_ID}`);
       const commandData = await CommandService.loadCommands(this.client);
       await CommandService.registerWithDiscordAPI(commandData);
     } catch (error) {

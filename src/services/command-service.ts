@@ -99,9 +99,19 @@ export class CommandService {
     }
 
     try {
-      const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN!);
+      const rest = new REST({ version: "10" }).setToken(
+        process.env.ENV === "prod"
+          ? process.env.PROD_BOT_TOKEN!
+          : process.env.DEV_BOT_TOKEN!
+      );
+      // Use the client ID from environment variables instead of hardcoded CONFIG
+      const applicationId =
+        process.env.ENV === "prod" ? CONFIG.PROD_BOT_ID : CONFIG.DEV_BOT_ID;
+
+      console.log(`Registering commands for application ID: ${applicationId}`);
+
       await rest.put(
-        Routes.applicationGuildCommands(CONFIG.BOT_ID, CONFIG.GUILD_ID),
+        Routes.applicationGuildCommands(applicationId, CONFIG.GUILD_ID),
         { body: commandData }
       );
       console.log(`Successfully registered ${commandData.length} commands`);

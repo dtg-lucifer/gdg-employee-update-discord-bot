@@ -23,9 +23,35 @@ export const interactionHandler = async (interaction: Interaction) => {
   }
 
   try {
+    // Add a flag to track if the interaction has been handled
+    (interaction as any).__handled = false;
+
     await command.execute(interaction as CommandInteraction);
+
+    // If the command didn't respond to the interaction, provide a default response
+    if (
+      !interaction.replied &&
+      !interaction.deferred &&
+      !(interaction as any).__handled
+    ) {
+      await interaction.reply({
+        content: "Command executed successfully",
+        flags: MessageFlags.Ephemeral,
+      });
+    }
   } catch (error: any) {
     console.error("Error executing command:", error);
+
+    // Handle common Discord API errors
+    if (error.code === 10062) {
+      console.log("Interaction expired before response could be sent");
+      return;
+    }
+
+    if (error.code === 40060) {
+      console.log("Interaction already acknowledged");
+      return;
+    }
 
     // Try to respond with an error message if not already responded
     try {

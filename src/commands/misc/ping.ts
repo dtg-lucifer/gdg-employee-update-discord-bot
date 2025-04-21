@@ -1,16 +1,18 @@
 import {
   MessageFlags,
   SlashCommandBuilder,
+  type CommandInteraction,
   type Interaction,
 } from "discord.js";
 import { embedBuilder } from "../../utils/embed-builder";
 
-const ping_execute = async (interaction: Interaction) => {
-  if (!interaction.isCommand()) return;
-
+const ping_execute = async (interaction: CommandInteraction) => {
   try {
-    // @INFO Check if interaction has already been replied to
-    if (interaction.replied) {
+    // Mark interaction as handled
+    (interaction as any).__handled = true;
+
+    // Check if interaction has already been replied to
+    if (interaction.replied || interaction.deferred) {
       console.log("Interaction already replied to, skipping ping response");
       return;
     }
@@ -23,6 +25,10 @@ const ping_execute = async (interaction: Interaction) => {
       flags: MessageFlags.Ephemeral,
     });
   } catch (error: any) {
+    if (error.code === 10062) {
+      console.log("Interaction expired before response could be sent");
+      return;
+    }
     console.error(`Error in ping command: ${error.message}`);
   }
 };
@@ -35,6 +41,7 @@ const ping_command = new SlashCommandBuilder()
 export default {
   data: ping_command,
   async execute(interaction: Interaction) {
-    await ping_execute(interaction);
+    if (!interaction.isCommand()) return;
+    await ping_execute(interaction as CommandInteraction);
   },
 };

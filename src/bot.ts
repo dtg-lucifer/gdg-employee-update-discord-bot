@@ -49,4 +49,8 @@ client.on("ready", () => {
 client.on("messageCreate", handleMessage);
 client.on("interactionCreate", interactionHandler);
 
-client.login(process.env.BOT_TOKEN);
+client.login(
+  process.env.ENV === "prod"
+    ? process.env.PROD_BOT_TOKEN
+    : process.env.DEV_BOT_TOKEN
+);
