@@ -37,18 +37,25 @@ export const buildSummaryEmbed = (updates: any[]) => {
   return embed;
 };
 
-export const embedBuilder = (title: string, description: string) => {
+export const embedBuilder = (
+  title: string,
+  description: string,
+  footer?: string,
+  author?: string
+) => {
   const embed = new EmbedBuilder()
     .setTitle(title)
     .setAuthor({
       name: "GDG On Campus TIU",
       url: "https://devx.gdgtiu.org",
     })
-    .setDescription(description)
+    .setDescription(`${description}${footer ? "\n" + footer : ""}`)
     .setColor(0x00ae86)
     .setTimestamp()
     .setFooter({
-      text: "Developer: Piush Bose",
+      text: author
+        ? `Sent by ${author}`
+        : "GDG On Campus TIU | Deveoper: Piush Bose",
       iconURL:
         "https://storage.googleapis.com/leaderboard-pfp/assets/gdg_logo.jpeg",
     })
