@@ -48,6 +48,7 @@ class level:
     xp_per_message = 1
     base_xp = 10
     growth_rate = 1.2
+    cooldown = 2  # seconds
 
 class emoji:
 
