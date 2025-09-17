@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class bot:
-    token = getenv("Discord_Token")
+    token = getenv("DISCORD_TOKEN")
     default_prefix = "g."
     api = True
     owner_ids = {int(x.strip()) for x in getenv("OWNER_ID", "").split(",") if x.strip()}
