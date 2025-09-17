@@ -8,7 +8,6 @@ from main import MyBot
 from typing import Optional
 import requests
 import aiohttp
-import wavelink
 import time
 
 
@@ -31,23 +30,13 @@ class Tools (Cog):
         await self.bot.db["homie"]["ping"].find_one({"ping":"pong"})
         db_ping = int((time.time()-tm)*1000)
 
-        # lavalink ping
-        tm = time.time()
-        try:
-            await wavelink.Playable.search("")
-        except:
-            pass
-
-        lava_ping = time.time()-tm
-        lava_ping = int(lava_ping * 1000)
-
         #cache ping
         tm = time.time()
         self.bot.ping_cache.get("ping")
         cache_ping = round((time.time()-tm)*1000, 3)
 
         embed = discord.Embed()
-        embed.description = f"{config.emoji.bot_ping} Bot ping: `{bot_ping} ms`\n \n{config.emoji.db_ping} Database ping: `{db_ping} ms` \n \n{config.emoji.lavalink_ping} Lavalink ping: `{lava_ping} ms`\n \n{config.emoji.cache} Cache ping: `{cache_ping} ms`"
+        embed.description = f"{config.emoji.bot_ping} Bot ping: `{bot_ping} ms`\n \n{config.emoji.db_ping} Database ping: `{db_ping} ms` \n \n{config.emoji.lavalink_ping}\n \n{config.emoji.cache} Cache ping: `{cache_ping} ms`"
         embed.color=config.color.no_color
         
         embed.set_author(name=self.bot.user.display_name, icon_url=self.bot.user.avatar.url)
