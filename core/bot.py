@@ -4,7 +4,6 @@ import config
 import asyncio
 import time
 from typing import Callable, Coroutine, List
-import wavelink
 from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 from core.api import set_bot_instance
@@ -25,7 +24,6 @@ class MyBot(commands.Bot):
             )
         
         self.uptime = None
-        self.nodes: List[wavelink.Node] = []
         self.setup_logger()
         self.help_command = None
 
@@ -33,12 +31,9 @@ class MyBot(commands.Bot):
         self.ping_cache = {"ping":"pong"}
         self.autoresponder_cache = {}
         self.level_cache = {}
-        self.premium_cache = {}
         self.np_cache = {}
-        self.gifignore_cache = {}
 
     def boot(self):
-
         try:
             self.logger.info("Bot is booting....")
             super().run(token=config.bot.token)
@@ -105,11 +100,7 @@ class MyBot(commands.Bot):
         #         "expires_at": entry["expires_at"]
         #     })
 
-        # load gif ignore cache
-        data = await self.db["gifignore"].find({}).to_list()
-        for entry in data:
-            self.gifignore_cache[entry["guild_id"]] = entry["channels"]
-        self.logger.info("Loaded gif ignore cache")
+
 
     async def setup_hook(self):
         self.uptime = time.time()
@@ -165,26 +156,3 @@ class MyBot(commands.Bot):
                 self.logger.error(f"Failed to load: {cog}")
                 self.logger.error(e)
         self.logger.info("Loaded all cogs")
-
-
-    @startup_task.append
-    async def setup_wavelink(self):
-        # await asyncio.sleep(5)
-        
-        for i, node in enumerate(config.lavalink.nodes, start=1):
-            uri = "ws://{}:{}".format(node.get("host"), node.get("port"))
-
-            node_config = wavelink.Node(
-                identifier= f"Node {i}",
-                uri=uri,
-                password=node.get("auth"),
-                client=self,
-                retries=3,
-            )
-            
-            try:
-                await wavelink.Pool.connect(client=self, nodes=[node_config])
-                self.nodes.append(node_config)
-                self.logger.info(f"Connected to {node_config.identifier}")
-            except Exception as e:
-                self.logger.error(f"Failed to connect to node {i}: {e}")
