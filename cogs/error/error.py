@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from core.cog import Cog
 from core.bot import MyBot
-from utils.exceptions import NotPremiumUser, DisabledChannel
 import config
 import time
 
@@ -60,15 +59,7 @@ class Error(Cog):
             else:
                 pass
 
-        elif isinstance(error, NotPremiumUser):
-            embed = discord.Embed(
-                title="Premium Required",
-                description=f"> **This command is only available to premium users.**\n> **You can get free premium by using the command:** `{self.bot.prefix_cache.get(ctx.guild.id)}premium free`",
-                color=config.color.no_color
-            )
-            return await ctx.send(embed=embed)
-        
-        elif isinstance(error, DisabledChannel):
+        elif isinstance(error, commands.NotOwner):
             return
         
         elif isinstance(error, commands.CommandNotFound):
