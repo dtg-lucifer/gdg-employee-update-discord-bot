@@ -26,9 +26,10 @@ class Tools (Cog):
         bot_ping = int(self.bot.latency*1000)
 
         # database ping
+        await self.bot.db["ping"].update_one({"ping": "pong"}, {"$set": {"ping": "pong"}}, upsert=True)
         tm = time.time()
-        await self.bot.db["homie"]["ping"].find_one({"ping":"pong"})
-        db_ping = int((time.time()-tm)*1000)
+        await self.bot.db["ping"].find_one({"ping": "pong"})
+        db_ping = int((time.time() - tm) * 1000)
 
         #cache ping
         tm = time.time()
